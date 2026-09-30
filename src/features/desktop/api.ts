@@ -35,6 +35,7 @@ const defaultSettings = {
   geminiHome: null,
   grokHome: null,
   piHome: null,
+  zcodeHome: null,
   preferredTerminal: null,
   visiblePlatforms: ["claude", "codex", "opencode", "grok", "pi"] as string[],
   navigationItems: [

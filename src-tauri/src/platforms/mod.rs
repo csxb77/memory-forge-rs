@@ -7,6 +7,7 @@ pub mod kiro;
 pub mod kiro_ide;
 pub mod opencode;
 pub mod pi;
+pub mod zcode;
 
 use serde::Serialize;
 use std::collections::HashMap;
@@ -520,6 +521,14 @@ pub fn get_adapter(
             let sessions_root = pi::default_pi_sessions_root(&path);
             Ok(Box::new(pi::PiPlatform::new(path, sessions_root)))
         }
+        "zcode" => {
+            let path = settings
+                .zcode_home
+                .as_ref()
+                .map(PathBuf::from)
+                .unwrap_or_else(|| home.join(".zcode"));
+            Ok(Box::new(zcode::ZcodePlatform::new(path)))
+        }
         _ => Err(format!("Unknown platform: {platform}")),
     }
 }
@@ -556,6 +565,7 @@ pub fn build_commands(platform: &str, session_id: &str) -> HashMap<String, Strin
             m
         }
         "kiro-ide" => HashMap::new(),
+        "zcode" => HashMap::new(),
         "gemini" => {
             let mut m = HashMap::new();
             m.insert("resume".into(), format!("gemini --resume '{session_id}'"));

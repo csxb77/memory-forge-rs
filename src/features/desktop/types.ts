@@ -19,6 +19,7 @@ export type DesktopSettings = {
   geminiHome: string | null;
   grokHome: string | null;
   piHome: string | null;
+  zcodeHome: string | null;
   preferredTerminal: string | null;
   visiblePlatforms: string[];
   navigationItems: string[];
@@ -41,7 +42,7 @@ export type DesktopSnapshot = {
 
 // ─── Session ───
 
-export type Platform = "claude" | "codex" | "cursor" | "opencode" | "kiro" | "kiro-ide" | "gemini" | "grok" | "pi";
+export type Platform = "claude" | "codex" | "cursor" | "opencode" | "kiro" | "kiro-ide" | "gemini" | "grok" | "pi" | "zcode";
 
 export type ContentMatch = {
   snippet: string;
