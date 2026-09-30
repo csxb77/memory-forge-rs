@@ -476,13 +476,22 @@ pub fn get_adapter(
             Ok(Box::new(kiro::KiroPlatform::new(path)))
         }
         "kiro-ide" => {
-            let path = settings
+            // New Kiro versions store sessions under `~/.kiro/sessions/<workspace>/sess_<id>/`.
+            let kiro_home = settings
+                .kiro_home
+                .as_ref()
+                .map(PathBuf::from)
+                .unwrap_or_else(|| home.join(".kiro"));
+            // Older versions keep sessions under `globalStorage/kiro.kiroagent/workspace-sessions/`.
+            let legacy_agent_home = settings
                 .kiro_ide_home
                 .as_ref()
                 .map(PathBuf::from)
-                .or_else(kiro_ide::default_agent_home)
-                .unwrap_or_else(|| home.join(".config/Kiro/User/globalStorage/kiro.kiroagent"));
-            Ok(Box::new(kiro_ide::KiroIdePlatform::new(path)))
+                .or_else(kiro_ide::default_legacy_agent_home);
+            Ok(Box::new(kiro_ide::KiroIdePlatform::new(
+                kiro_home,
+                legacy_agent_home,
+            )))
         }
         "gemini" => {
             let path = settings
